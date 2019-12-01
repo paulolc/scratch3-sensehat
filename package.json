@@ -1,0 +1,15 @@
+{
+  "name": "scratch3-sensehat",
+  "version": "1.0.0",
+  "description": "Utility that enables the programming of the Raspberry Pi Sense Hat with MIT Scratch 3 ",
+  "main": "scratch3-sensehat.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "node-sense-hat": "0.0.2",
+    "scratch3-bridge": "^1.0.1"
+  }
+}
