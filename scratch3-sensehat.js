@@ -18,7 +18,7 @@ s3b.on('msg', msg =>{
         }
         let row = 8 - Math.ceil( data[0] / 8 ) ;
         let column = (data[0] - 1) % 8  ;
-        let rgbcolor = [ data[1] ,data[2],data[3] ];
+        let rgbcolor = [ data[1] ,data[2], data[3] ];
         ledmatrix.setPixel( row , column, rgbcolor );
     } else {
         starting  = false;
@@ -30,6 +30,3 @@ s3b.on('connect', ()=>{
 })
 
 s3b.connect();
-
-
-    
