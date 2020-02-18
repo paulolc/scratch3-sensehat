@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "node-sense-hat": "0.0.2",
-    "scratch3-bridge": "^1.1.0"
+    "scratch3-bridge": "^2.0.0",
+    "tar": "^5.0.5"
   }
 }
