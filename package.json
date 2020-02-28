@@ -3,14 +3,22 @@
   "version": "1.0.0",
   "description": "Utility that enables the programming of the Raspberry Pi Sense Hat with MIT Scratch 3 ",
   "main": "scratch3-sensehat.js",
+  "bin": "scratch3-sensehat.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "pkg . --target node8.16.0-linux-armv7"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "node-sense-hat": "0.0.2",
-    "scratch3-bridge": "^2.0.0",
+    "scratch3-bridge": "^2.1.0",
     "tar": "^5.0.5"
+  },
+  "devDependencies": { 
+    "pkg": "^4.4.3" 
+  },
+  "pkg": {
+    "assets": "node_modules/sense-hat-led/**/*"
   }
 }

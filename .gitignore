@@ -62,3 +62,7 @@ typings/
 
 # cachedscratch session information  
 .scratchSession
+
+RTIMULib.ini
+target
+draftboard
