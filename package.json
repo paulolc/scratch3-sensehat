@@ -15,8 +15,8 @@
     "scratch3-bridge": "^2.1.0",
     "tar": "^5.0.5"
   },
-  "devDependencies": { 
-    "pkg": "^4.4.3" 
+  "devDependencies": {
+    "pkg": "^4.4.3"
   },
   "pkg": {
     "assets": "node_modules/sense-hat-led/**/*"

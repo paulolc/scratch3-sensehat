@@ -1,38 +1,51 @@
-// make executable using pkg + makeself via npm build scripts?
-
-
 const sensehat = require('node-sense-hat');
 const ledmatrix = sensehat.Leds;
 const imu = sensehat.Imu;
 const ScratchBridge = require('scratch3-bridge');
-const IMU = new imu.IMU();
 let sensehatreadings = [];
-let s3b = new ScratchBridge();
+
 let sender = "00000";
 let started = false;
 
 const IMU_POLLING_INTERVAL_IN_MS = 100;
 const PERIODIC_DATA_SEND_IN_MS = 2000;
+const SPLASH_MSG = `
 
+scratch3-sensehat v1.0
 
-console.log("");
-console.log("Scratch Raspberry Pi SenseHAT Matrix Editor companion app!");
-console.log("- ©paulolc 2020");
-console.log("");
-console.log("This app allows you to paint the leds on the"); 
-console.log("Raspberry Pi SenseHAT led matrix display");
-console.log("from Scratch 3 Online and without any");
-console.log("Scratch extensions!");
-console.log("");
-console.log("You will need to enter your Scratch credentials below and choose which of y the Scratch SenseHAT editor project")
-console.log("");
+Companion utility for the SenseHAT Led Matrix Editor MIT Scratch project
+- ©paulolc 2020
 
+This utility alongside your remixed MIT Scratch 3 project 
+SenseHAT Led Matrix Editor will allow you to paint the 
+leds on the Raspberry Pi SenseHAT led matrix display from 
+Scratch 3 Online and without any Scratch extensions!
+
+It's required to:
+- Run this utility on a Raspberry Pi with a SenseHAT attached.
+- From an MIT Scratch account with "Scratcher" status, "Remix" 
+and run the SenseHAT Led Matrix Editor MIT Scratch project.
+
+You will be requested for:
+
+1. Entering your Scratch credentials (only on the first run) 
+2. Choose your Remixed Scratch SenseHAT Led Matrix Editor 
+project from the prompt's project listing.
+
+`;
+
+console.log(SPLASH_MSG);
+
+console.log("- Checking Raspberry Pi SenseHAT ...\n")
+const IMU = new imu.IMU();
+ledmatrix.clear();
+ledmatrix.setRotation(270);
+
+console.log("\n - Connecting to Scratch Online...\n");
+console.log("(Authenticate if needed and choose your remixed Scratch SenseHAT Led Matrix Editor project from the listing)\n");
 console.log('Press any key to continue.');
 process.stdin.once('data', ()=>{
-    
-    ledmatrix.clear();
-    ledmatrix.setRotation(270);
-    
+    let s3b = new ScratchBridge();
     s3b.on('data', (msg, asender) =>{
         sender = ( asender ? asender : sender );
         let values = msg;
@@ -48,10 +61,10 @@ process.stdin.once('data', ()=>{
             let row = 8 - Math.ceil( data[0] / 8 ) ;
             let column = (data[0] - 1) % 8  ;
             let rgbcolor = [ data[1] ,data[2], data[3] ];
-
+    
             ledmatrix.setPixel( row , column, rgbcolor );
         } else {
-            console.log(`Waiting for the handshake message from the Scratch project. ( ${sender}: ${msg} )`);
+            console.log(`Checking if the message received is the handshake from the Scratch project. ( ${sender}: ${msg} )`);
             if( msg.toString() === sender.substr(0,5) ) {
                 console.log(`Handshake message has been received. Sending sensor data has STARTED! `);
                 started = true;
@@ -61,6 +74,7 @@ process.stdin.once('data', ()=>{
     
     s3b.on('connect', ()=>{
         console.log('Connected!');
+        console.log(`Waiting for the handshake message from the Scratch project...`);
         const sendreadings = setInterval(() => {
             if(started){
                 console.log(`Sending data to ${sender}: '${sensehatreadings}'`)
@@ -70,8 +84,7 @@ process.stdin.once('data', ()=>{
         
     })
     
-    s3b.connect();
-
+    s3b.connect();    
 });
 
 const flattendata = function( data ){
@@ -99,7 +112,5 @@ const imupolling = setInterval( () => {
         sensehatreadings = [ts].concat( sensehatreadings );//.slice(Math.max(sensehatreadings.length - 3, 0)));
     });
 }, IMU_POLLING_INTERVAL_IN_MS );
-
-
 
 
